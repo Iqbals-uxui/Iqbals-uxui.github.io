@@ -26,7 +26,7 @@
             bottom: 0;
             background-color: rgba(255, 150, 50, 0); /* Warm orange, default opacity */
             pointer-events: none;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.3s ease;
         }
 
         /* Container for controls */
@@ -35,21 +35,30 @@
             flex-direction: column;
             align-items: center;
             gap: 1rem;
-        }
-
-        /* Toggle button styles */
-        .toggle-button {
+            background: #333;
             padding: 1rem;
-            border: none;
-            background-color: #333;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
-        .toggle-button.active {
-            background-color: #555;
+        /* Slider styles */
+        .slider {
+            width: 80%;
+            -webkit-appearance: none;
+            height: 10px;
+            background: #666;
+            outline: none;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #888;
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -57,8 +66,11 @@
     <div id="overlay"></div>
 
     <div class="container">
-        <button id="brightnessToggle" class="toggle-button">Toggle Brightness</button>
-        <button id="warmToggle" class="toggle-button">Toggle Warm Light</button>
+        <label for="brightnessSlider">Brightness</label>
+        <input id="brightnessSlider" type="range" class="slider" min="0" max="100" value="0">
+        
+        <label for="warmSlider">Warm Light Intensity</label>
+        <input id="warmSlider" type="range" class="slider" min="0" max="100" value="0">
     </div>
 
     <script src="app.js"></script>
