@@ -1,11 +1,12 @@
-let children = [];
-let chores = [];
+let children = JSON.parse(localStorage.getItem('children')) || [];
+let chores = JSON.parse(localStorage.getItem('chores')) || [];
 
 function addChild() {
     const childName = document.getElementById('childName').value.trim();
     if (childName) {
         children.push({ name: childName, points: 0, history: [] });
         document.getElementById('childName').value = '';
+        updateLocalStorage();
         updateLeaderboard();
     }
 }
@@ -17,6 +18,7 @@ function addChore() {
         chores.push({ name: choreName, points: chorePoints });
         document.getElementById('choreName').value = '';
         document.getElementById('chorePoints').value = '';
+        updateLocalStorage();
         displayChores();
     }
 }
@@ -72,6 +74,7 @@ function assignPoints(choreIndex, selectedChildName) {
         const timestamp = new Date().toLocaleString();
         child.points += chore.points;
         child.history.push({ chore: chore.name, points: chore.points, time: timestamp });
+        updateLocalStorage();
         updateLeaderboard();
     }
 }
@@ -84,6 +87,7 @@ function removePoints(choreIndex, selectedChildName) {
         const timestamp = new Date().toLocaleString();
         child.points -= chore.points;
         child.history.push({ chore: chore.name, points: -chore.points, time: timestamp });
+        updateLocalStorage();
         updateLeaderboard();
     }
 }
@@ -107,7 +111,11 @@ function updateChart() {
     const labels = children.map(child => child.name);
     const data = children.map(child => child.points);
 
-    new Chart(ctx, {
+    if (window.leaderboardChart) {
+        window.leaderboardChart.destroy();
+    }
+
+    window.leaderboardChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
@@ -132,7 +140,7 @@ function showBreakdown(childIndex) {
     const child = children[childIndex];
     document.getElementById('breakdownTitle').textContent = `${child.name}'s Points Breakdown`;
     document.getElementById('breakdownList').innerHTML = '';
-    
+
     child.history.forEach(entry => {
         const li = document.createElement('li');
         li.textContent = `${entry.time}: ${entry.chore} - ${entry.points} points`;
@@ -146,6 +154,12 @@ function closeBreakdown() {
     document.getElementById('breakdownModal').style.display = "none";
 }
 
-function filterBreakdown() {
-    // Implementation for filtering points breakdown based on selected month and year can go here
+function updateLocalStorage() {
+    localStorage.setItem('children', JSON.stringify(children));
+    localStorage.setItem('chores', JSON.stringify(chores));
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateLeaderboard();
+    displayChores();
+});
