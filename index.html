@@ -24,14 +24,23 @@
             <input type="number" id="chorePoints" placeholder="Points">
             <button onclick="addChore()">Add Chore</button>
 
-            <!-- List of Chores -->
+            <!-- List of Chores with Assign Buttons -->
             <ul id="choresList"></ul>
         </div>
 
-        <!-- Leaderboard -->
+        <!-- Leaderboard with Bar Chart -->
         <div id="leaderboard">
             <h2>Leaderboard</h2>
             <ul id="leaderboardList"></ul>
+        </div>
+
+        <!-- Modal for Point Breakdown -->
+        <div id="breakdownModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeBreakdown()">&times;</span>
+                <h2 id="breakdownTitle"></h2>
+                <ul id="breakdownList"></ul>
+            </div>
         </div>
     </div>
 
