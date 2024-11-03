@@ -1,13 +1,18 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
     text-align: center;
     background-color: #f0f8ff;
     color: #333;
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.5em;
     color: #2a9d8f;
+}
+
+h2 {
+    font-size: 2em;
+    color: #264653;
 }
 
 section {
@@ -15,21 +20,31 @@ section {
 }
 
 input[type="text"], input[type="number"] {
-    padding: 5px;
+    padding: 10px;
     margin: 5px;
+    width: 200px;
 }
 
 button {
-    padding: 5px 10px;
+    padding: 10px 15px;
     margin: 5px;
     background-color: #2a9d8f;
     color: #fff;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
     background-color: #21867a;
+}
+
+button.remove {
+    background-color: #e63946;
+}
+
+button.remove:hover {
+    background-color: #d62839;
 }
 
 ul {
@@ -41,8 +56,12 @@ ul {
     background-color: #ffb703;
 }
 
+.assign-button:hover {
+    background-color: #ffa600;
+}
+
 #leaderboardList li {
-    font-size: 1.2em;
+    font-size: 1.5em;
 }
 
 .modal {
