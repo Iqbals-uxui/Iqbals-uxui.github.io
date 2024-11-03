@@ -1,18 +1,18 @@
 {
-    "name": "My PWA Example",
-    "short_name": "PWAExample",
-    "start_url": "/index.html",
+    "name": "Warm Light PWA",
+    "short_name": "WarmLight",
+    "start_url": ".",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#4a90e2",
+    "background_color": "#1a1a1a",
+    "description": "Adjust screen lighting to a warm mode for comfortable night reading",
     "icons": [
         {
-            "src": "/icon-192x192.png",
+            "src": "icon.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/icon-512x512.png",
+            "src": "icon.png",
             "sizes": "512x512",
             "type": "image/png"
         }

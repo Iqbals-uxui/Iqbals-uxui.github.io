@@ -3,18 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My PWA Example</title>
-    <link rel="manifest" href="/manifest.json">
+    <title>Warm Light PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* Full-screen overlay */
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 150, 50, 0); /* Warm orange, default opacity */
+            pointer-events: none;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Container for controls */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Toggle button styles */
+        .toggle-button {
+            padding: 1rem;
+            border: none;
+            background-color: #333;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .toggle-button.active {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Progressive Web App!Edit: I'm making some changes.</h1>
-    <p>This website can now work as a PWA.</p>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-            .then(() => console.log('Service Worker Registered'))
-            .catch(error => console.error('Service Worker Registration Failed', error));
-        }
-    </script>
+    <div id="overlay"></div>
+
+    <div class="container">
+        <button id="brightnessToggle" class="toggle-button">Toggle Brightness</button>
+        <button id="warmToggle" class="toggle-button">Toggle Warm Light</button>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
