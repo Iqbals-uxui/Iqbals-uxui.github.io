@@ -11,6 +11,12 @@ function addChild() {
     }
 }
 
+function removeChild(childIndex) {
+    children.splice(childIndex, 1);
+    updateLocalStorage();
+    updateLeaderboard();
+}
+
 function addChore() {
     const choreName = document.getElementById('choreName').value.trim();
     const chorePoints = parseInt(document.getElementById('chorePoints').value);
@@ -96,10 +102,17 @@ function updateLeaderboard() {
     const leaderboardList = document.getElementById('leaderboardList');
     leaderboardList.innerHTML = '';
 
-    children.sort((a, b) => b.points - a.points).forEach(child => {
+    children.forEach((child, index) => {
         const item = document.createElement('li');
         item.textContent = `${child.name}: ${child.points} points`;
-        item.onclick = () => showBreakdown(children.indexOf(child));
+
+        const removeButton = document.createElement('button');
+        removeButton.classList.add('remove');
+        removeButton.textContent = 'Remove Child';
+        removeButton.onclick = () => removeChild(index);
+
+        item.appendChild(removeButton);
+        item.onclick = () => showBreakdown(index);
         leaderboardList.appendChild(item);
     });
 
@@ -116,7 +129,7 @@ function updateChart() {
     }
 
     window.leaderboardChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'horizontalBar', // Changed to horizontal bar chart
         data: {
             labels: labels,
             datasets: [{
@@ -128,9 +141,11 @@ function updateChart() {
         options: {
             responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
             }
         }
     });
