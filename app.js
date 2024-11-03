@@ -1,8 +1,6 @@
-// Data structures to hold children, chores, and point breakdown
-const children = [];
-const chores = [];
+let children = [];
+let chores = [];
 
-// Adds a child
 function addChild() {
     const childName = document.getElementById('childName').value.trim();
     if (childName) {
@@ -12,11 +10,10 @@ function addChild() {
     }
 }
 
-// Adds a chore
 function addChore() {
     const choreName = document.getElementById('choreName').value.trim();
-    const chorePoints = parseInt(document.getElementById('chorePoints').value, 10);
-    if (choreName && chorePoints > 0) {
+    const chorePoints = parseInt(document.getElementById('chorePoints').value);
+    if (choreName && !isNaN(chorePoints)) {
         chores.push({ name: choreName, points: chorePoints });
         document.getElementById('choreName').value = '';
         document.getElementById('chorePoints').value = '';
@@ -24,7 +21,6 @@ function addChore() {
     }
 }
 
-// Displays chores list with colorful "Assign" buttons
 function displayChores() {
     const choresList = document.getElementById('choresList');
     choresList.innerHTML = '';
@@ -32,72 +28,81 @@ function displayChores() {
     chores.forEach((chore, index) => {
         const choreItem = document.createElement('li');
         const assignButton = document.createElement('button');
+        const childSelect = document.createElement('select');
 
         assignButton.classList.add('assign-button');
-        assignButton.style.backgroundColor = `hsl(${index * 30}, 70%, 80%)`; // Unique color
         assignButton.textContent = `Assign ${chore.points} points`;
-        assignButton.onclick = () => assignPoints(index);
+        assignButton.onclick = () => assignPoints(index, childSelect.value);
+
+        children.forEach(child => {
+            const option = document.createElement('option');
+            option.value = child.name;
+            option.textContent = child.name;
+            childSelect.appendChild(option);
+        });
 
         choreItem.textContent = chore.name;
+        choreItem.appendChild(childSelect);
         choreItem.appendChild(assignButton);
         choresList.appendChild(choreItem);
     });
 }
 
-// Assigns points to a selected child and logs timestamp
-function assignPoints(choreIndex) {
+function assignPoints(choreIndex, selectedChildName) {
     const chore = chores[choreIndex];
-    const childName = prompt(`Assign points to which child? Enter the name:`);
-    const child = children.find(c => c.name.toLowerCase() === childName.toLowerCase());
+    const child = children.find(c => c.name === selectedChildName);
 
     if (child) {
         const timestamp = new Date().toLocaleString();
         child.points += chore.points;
         child.history.push({ chore: chore.name, points: chore.points, time: timestamp });
         updateLeaderboard();
-    } else {
-        alert("Child not found!");
     }
 }
 
-// Opens modal with detailed point breakdown for a child
+function updateLeaderboard() {
+    const leaderboardList = document.getElementById('leaderboardList');
+    leaderboardList.innerHTML = '';
+
+    children.sort((a, b) => b.points - a.points).forEach(child => {
+        const item = document.createElement('li');
+        item.textContent = `${child.name}: ${child.points} points`;
+        item.onclick = () => showBreakdown(children.indexOf(child));
+        leaderboardList.appendChild(item);
+    });
+}
+
 function showBreakdown(childIndex) {
     const child = children[childIndex];
-    const breakdownTitle = document.getElementById('breakdownTitle');
-    const breakdownList = document.getElementById('breakdownList');
-
-    breakdownTitle.textContent = `${child.name}'s Point Breakdown`;
-    breakdownList.innerHTML = '';
-    
-    child.history.forEach(entry => {
-        const item = document.createElement('li');
-        item.textContent = `${entry.chore}: ${entry.points} points (on ${entry.time})`;
-        breakdownList.appendChild(item);
-    });
-
+    document.getElementById('breakdownTitle').textContent = `${child.name}'s Point Breakdown`;
+    populateDateFilters(child.history);
+    filterBreakdown(childIndex);
     document.getElementById('breakdownModal').style.display = 'block';
 }
 
-// Closes breakdown modal
 function closeBreakdown() {
     document.getElementById('breakdownModal').style.display = 'none';
 }
 
-// Updates leaderboard and displays a bar chart
-function updateLeaderboard() {
-    children.sort((a, b) => b.points - a.points);
-    const leaderboardList = document.getElementById('leaderboardList');
-    leaderboardList.innerHTML = '';
+function populateDateFilters(history) {
+    // No additional code needed for this example, but you may populate month/year dropdowns if necessary
+}
 
-    children.forEach((child, index) => {
-        const childItem = document.createElement('li');
-        const bar = document.createElement('div');
-        
-        bar.classList.add('bar');
-        bar.style.width = `${child.points * 2}px`; // Adjust scaling as needed
+function filterBreakdown(childIndex) {
+    const monthFilter = document.getElementById('monthFilter').value;
+    const yearFilter = document.getElementById('yearFilter').value;
+    const breakdownList = document.getElementById('breakdownList');
+    breakdownList.innerHTML = '';
 
-        childItem.innerHTML = `<span onclick="showBreakdown(${index})">${child.name} - ${child.points} points</span>`;
-        childItem.appendChild(bar);
-        leaderboardList.appendChild(childItem);
-    });
+    children[childIndex].history
+        .filter(entry => {
+            const entryDate = new Date(entry.time);
+            return (!monthFilter || entryDate.getMonth() + 1 === parseInt(monthFilter)) &&
+                   (!yearFilter || entryDate.getFullYear() === parseInt(yearFilter));
+        })
+        .forEach(entry => {
+            const item = document.createElement('li');
+            item.textContent = `${entry.chore}: ${entry.points} points (on ${entry.time})`;
+            breakdownList.appendChild(item);
+        });
 }
