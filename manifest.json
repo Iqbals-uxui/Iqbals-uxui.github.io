@@ -1,10 +1,6 @@
 {
-    "name": "Warm Light PWA",
-    "short_name": "WarmLight",
-    "start_url": ".",
-    "display": "standalone",
-    "background_color": "#1a1a1a",
-    "description": "Adjust screen lighting to a warm mode for comfortable night reading",
+    "short_name": "Leaderboard",
+    "name": "Kids Leaderboard App",
     "icons": [
         {
             "src": "icon.png",
@@ -12,9 +8,13 @@
             "type": "image/png"
         },
         {
-            "src": "icon.png",
+            "src": "icon-large.png",
             "sizes": "512x512",
             "type": "image/png"
         }
-    ]
+    ],
+    "start_url": "/index.html",
+    "display": "standalone",
+    "theme_color": "#007bff",
+    "background_color": "#ffffff"
 }

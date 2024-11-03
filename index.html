@@ -3,74 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warm Light PWA</title>
+    <title>Leaderboard App</title>
     <link rel="manifest" href="manifest.json">
-    <style>
-        /* Full-screen overlay */
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #1a1a1a;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(255, 150, 50, 0); /* Warm orange, default opacity */
-            pointer-events: none;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Container for controls */
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            background: #333;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        /* Slider styles */
-        .slider {
-            width: 80%;
-            -webkit-appearance: none;
-            height: 10px;
-            background: #666;
-            outline: none;
-            opacity: 0.9;
-            transition: opacity 0.2s;
-            cursor: pointer;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #888;
-            border-radius: 50%;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="overlay"></div>
-
     <div class="container">
-        <label for="brightnessSlider">Brightness</label>
-        <input id="brightnessSlider" type="range" class="slider" min="0" max="100" value="0">
-        
-        <label for="warmSlider">Warm Light Intensity</label>
-        <input id="warmSlider" type="range" class="slider" min="0" max="100" value="0">
+        <h1>Kids Leaderboard</h1>
+
+        <!-- Add Child Section -->
+        <div id="addChildSection">
+            <input type="text" id="childName" placeholder="Enter child's name">
+            <button onclick="addChild()">Add Child</button>
+        </div>
+
+        <!-- Chores Section -->
+        <div id="choresSection">
+            <h2>Manage Chores</h2>
+            <input type="text" id="choreName" placeholder="Enter chore name">
+            <input type="number" id="chorePoints" placeholder="Points">
+            <button onclick="addChore()">Add Chore</button>
+
+            <!-- List of Chores -->
+            <ul id="choresList"></ul>
+        </div>
+
+        <!-- Leaderboard -->
+        <div id="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboardList"></ul>
+        </div>
     </div>
 
     <script src="app.js"></script>
