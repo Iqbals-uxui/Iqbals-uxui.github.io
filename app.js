@@ -21,7 +21,7 @@ function addChore() {
     const choreName = document.getElementById('choreName').value.trim();
     const chorePoints = parseInt(document.getElementById('chorePoints').value);
     if (choreName && !isNaN(chorePoints)) {
-        chores.push({ name: choreName, points: chorePoints });
+        chores.push({ name: choreName, points: chorePoints, color: getRandomColor() });
         document.getElementById('choreName').value = '';
         document.getElementById('chorePoints').value = '';
         updateLocalStorage();
@@ -35,8 +35,13 @@ function displayChores() {
 
     chores.forEach((chore, index) => {
         const choreItem = document.createElement('li');
+        choreItem.classList.add('chore-item');
+        choreItem.style.backgroundColor = chore.color;
+        choreItem.innerHTML = `${chore.name} (${chore.points} points)`;
+
         const assignButton = document.createElement('button');
         const removeButton = document.createElement('button');
+        const editButton = document.createElement('button');
         const childSelect = document.createElement('select');
 
         assignButton.classList.add('assign-button');
@@ -47,6 +52,10 @@ function displayChores() {
         removeButton.textContent = `Remove ${chore.points} points`;
         removeButton.onclick = () => removePoints(index, childSelect.value);
 
+        editButton.classList.add('edit');
+        editButton.textContent = 'Edit Chore';
+        editButton.onclick = () => editChore(index);
+
         children.forEach(child => {
             const option = document.createElement('option');
             option.value = child.name;
@@ -54,127 +63,17 @@ function displayChores() {
             childSelect.appendChild(option);
         });
 
-        choreItem.textContent = chore.name;
-        choreItem.style.color = getRandomColor(); // Random color for each chore
         choreItem.appendChild(childSelect);
         choreItem.appendChild(assignButton);
         choreItem.appendChild(removeButton);
+        choreItem.appendChild(editButton);
         choresList.appendChild(choreItem);
     });
 }
 
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
-
-function assignPoints(choreIndex, selectedChildName) {
-    const chore = chores[choreIndex];
-    const child = children.find(c => c.name === selectedChildName);
-
-    if (child) {
-        const timestamp = new Date().toLocaleString();
-        child.points += chore.points;
-        child.history.push({ chore: chore.name, points: chore.points, time: timestamp });
-        updateLocalStorage();
-        updateLeaderboard();
-    }
-}
-
-function removePoints(choreIndex, selectedChildName) {
-    const chore = chores[choreIndex];
-    const child = children.find(c => c.name === selectedChildName);
-
-    if (child) {
-        const timestamp = new Date().toLocaleString();
-        child.points -= chore.points;
-        child.history.push({ chore: chore.name, points: -chore.points, time: timestamp });
-        updateLocalStorage();
-        updateLeaderboard();
-    }
-}
-
-function updateLeaderboard() {
-    const leaderboardList = document.getElementById('leaderboardList');
-    leaderboardList.innerHTML = '';
-
-    children.forEach((child, index) => {
-        const item = document.createElement('li');
-        item.textContent = `${child.name}: ${child.points} points`;
-
-        const removeButton = document.createElement('button');
-        removeButton.classList.add('remove');
-        removeButton.textContent = 'Remove Child';
-        removeButton.onclick = () => removeChild(index);
-
-        item.appendChild(removeButton);
-        item.onclick = () => showBreakdown(index);
-        leaderboardList.appendChild(item);
-    });
-
-    updateChart();
-}
-
-function updateChart() {
-    const ctx = document.getElementById('leaderboardChart').getContext('2d');
-    const labels = children.map(child => child.name);
-    const data = children.map(child => child.points);
-
-    if (window.leaderboardChart) {
-        window.leaderboardChart.destroy();
-    }
-
-    window.leaderboardChart = new Chart(ctx, {
-        type: 'horizontalBar', // Changed to horizontal bar chart
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Points',
-                data: data,
-                backgroundColor: children.map(() => getRandomColor()),
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-}
-
-function showBreakdown(childIndex) {
-    const child = children[childIndex];
-    document.getElementById('breakdownTitle').textContent = `${child.name}'s Points Breakdown`;
-    document.getElementById('breakdownList').innerHTML = '';
-
-    child.history.forEach(entry => {
-        const li = document.createElement('li');
-        li.textContent = `${entry.time}: ${entry.chore} - ${entry.points} points`;
-        document.getElementById('breakdownList').appendChild(li);
-    });
-
-    document.getElementById('breakdownModal').style.display = "block";
-}
-
-function closeBreakdown() {
-    document.getElementById('breakdownModal').style.display = "none";
-}
-
-function updateLocalStorage() {
-    localStorage.setItem('children', JSON.stringify(children));
-    localStorage.setItem('chores', JSON.stringify(chores));
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    updateLeaderboard();
-    displayChores();
-});
+function editChore(choreIndex) {
+    const newName = prompt('Enter new chore name:', chores[choreIndex].name);
+    const newPoints = prompt('Enter new points:', chores[choreIndex].points);
+    if (newName && !isNaN(newPoints)) {
+        chores[choreIndex].name = newName;
+        chores[choreIndex].points = parseInt(newPoints

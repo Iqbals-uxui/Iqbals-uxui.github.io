@@ -96,3 +96,11 @@ ul {
 .close:hover {
     color: #000;
 }
+
+.chore-item {
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+}
