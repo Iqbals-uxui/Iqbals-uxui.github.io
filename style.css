@@ -1,106 +1,42 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
-    text-align: center;
-    background-color: #f0f8ff;
-    color: #333;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: #f4f4f9;
+  color: #333;
 }
 
-h1 {
-    font-size: 2.5em;
-    color: #2a9d8f;
+.header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 1em 0;
 }
 
-h2 {
-    font-size: 2em;
-    color: #264653;
+.map-container {
+  margin: 2em auto;
+  max-width: 90%;
+  height: 500px;
+  border: 2px solid #ddd;
 }
 
-section {
-    margin: 20px;
+.map-container object {
+  width: 100%;
+  height: 100%;
 }
 
-input[type="text"], input[type="number"] {
-    padding: 10px;
-    margin: 5px;
-    width: 200px;
+.info-container {
+  margin-top: 2em;
 }
 
-button {
-    padding: 10px 15px;
-    margin: 5px;
-    background-color: #2a9d8f;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+.info-container h2 {
+  color: #4CAF50;
 }
 
-button:hover {
-    background-color: #21867a;
+p {
+  font-size: 1.2em;
 }
 
-button.remove {
-    background-color: #e63946;
-}
-
-button.remove:hover {
-    background-color: #d62839;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.assign-button {
-    background-color: #ffb703;
-}
-
-.assign-button:hover {
-    background-color: #ffa600;
-}
-
-#leaderboardList li {
-    font-size: 1.5em;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 60px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover {
-    color: #000;
-}
-
-.chore-item {
-    color: white;
-    padding: 10px;
-    margin: 5px;
-    border-radius: 5px;
-    font-weight: bold;
+#country-name, #continent-name, #currency-name {
+  margin: 0.5em 0;
 }
